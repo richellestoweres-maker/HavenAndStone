@@ -1,4 +1,4 @@
-// Hearth & Stone catalog. Edit this file to add, remove or reprice products.
+// Haven & Stone catalog. Edit this file to add, remove or reprice products.
 // category: objects | textiles | table | lighting | mirrors | furniture
 // room: kitchen | living | table | bedroom
 window.HS_PRODUCTS = [

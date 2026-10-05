@@ -57,7 +57,7 @@
       '<div><button class="menu-btn" aria-label="Open menu" aria-expanded="false">' + ICON.menu + '</button>' +
       '<form class="search" action="shop.html" role="search">' + ICON.search.replace("<svg", '<svg width="16" height="16" style="stroke:#2e2925;fill:none;stroke-width:1.4"') +
       '<input name="q" type="search" placeholder="Search..." aria-label="Search"></form></div>' +
-      '<a class="logo" href="index.html"><span class="word">HEARTH &amp; STONE</span><span class="tag">Objects for a home well lived</span></a>' +
+      '<a class="logo" href="index.html"><span class="word">HAVEN &amp; STONE</span><span class="tag">Objects for a home well lived</span></a>' +
       '<div class="icons">' +
       '<a class="acct" href="story.html" aria-label="About us">' + ICON.user + '</a>' +
       '<a href="shop.html?filter=saved" aria-label="Saved items">' + ICON.heart + '</a>' +
@@ -75,19 +75,19 @@
   if (footer) {
     footer.outerHTML =
       '<section class="newsletter"><div class="wrap">' +
-      '<div class="eyebrow">The Hearth &amp; Stone Letter</div>' +
+      '<div class="eyebrow">The Haven &amp; Stone Letter</div>' +
       "<h2>Be the first to see Collection No. 01</h2>" +
       "<p>New arrivals, styling notes and quiet inspiration for a home well lived. Never more than twice a month.</p>" +
       '<form class="news-form"><input type="email" required placeholder="Your email address" aria-label="Email address"><button type="submit">Join</button></form>' +
       '<div class="news-note" aria-live="polite"></div>' +
       "</div></section>" +
       '<footer class="site-footer"><div class="wrap"><div class="foot-grid">' +
-      '<div><div class="word">HEARTH &amp; STONE</div><p>Timeless furnishings, thoughtful objects and natural textures, gathered for a home that feels collected, not decorated.</p></div>' +
+      '<div><div class="word">HAVEN &amp; STONE</div><p>Timeless furnishings, thoughtful objects and natural textures, gathered for a home that feels collected, not decorated.</p></div>' +
       '<div><h4>Shop</h4><ul><li><a href="shop.html?filter=new">New Arrivals</a></li><li><a href="collection.html">Collection No. 01</a></li><li><a href="shop.html?filter=objects">Objects</a></li><li><a href="shop.html?filter=textiles">Textiles</a></li><li><a href="shop.html?filter=furniture">Furniture</a></li></ul></div>' +
       '<div><h4>Rooms</h4><ul><li><a href="shop.html?room=kitchen">The Kitchen</a></li><li><a href="shop.html?room=living">The Living Room</a></li><li><a href="shop.html?room=table">The Table</a></li><li><a href="shop.html?room=bedroom">The Bedroom</a></li></ul></div>' +
-      '<div><h4>About</h4><ul><li><a href="story.html">Our Story</a></li><li><a href="story.html#materials">Our Materials</a></li><li><a href="story.html#home-edit">The Home Edit</a></li><li><a href="mailto:hello@hearthandstone.com">Contact</a></li></ul></div>' +
+      '<div><h4>About</h4><ul><li><a href="story.html">Our Story</a></li><li><a href="story.html#materials">Our Materials</a></li><li><a href="story.html#home-edit">The Home Edit</a></li><li><a href="mailto:hello@havenandstone.com">Contact</a></li></ul></div>' +
       "</div>" +
-      '<div class="foot-base"><span>&copy; ' + new Date().getFullYear() + " Hearth &amp; Stone. All rights reserved.</span><span>Made in Texas</span></div>" +
+      '<div class="foot-base"><span>&copy; ' + new Date().getFullYear() + " Haven &amp; Stone. All rights reserved.</span><span>Made in Texas</span></div>" +
       "</div></footer>";
   }
 
