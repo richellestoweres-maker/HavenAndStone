@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth &amp; Stone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body data-page="product">
+<div id="site-header"></div>
+
+<main class="wrap">
+  <div id="pdp-root"></div>
+  <section style="padding-bottom:80px">
+    <div class="section-head"><h2>You May Also Like</h2><a class="link-arrow" href="shop.html">Shop all</a></div>
+    <div class="grid-4" id="related"></div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get("id");
+  var p = HS.byId(id) || HS_PRODUCTS[0];
+  var catName = "Shop";
+  HS_CATEGORIES.forEach(function (c) { if (c[0] === p.category) catName = c[1]; });
+  document.title = p.name + " | Hearth & Stone";
+
+  var color = p.swatches[0][0], qty = 1;
+  document.getElementById("pdp-root").innerHTML =
+    '<div class="crumbs"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="shop.html?filter=' + p.category + '">' + catName + "</a> &nbsp;/&nbsp; " + HS.esc(p.name) + "</div>" +
+    '<div class="pdp">' +
+      '<div class="pdp-img"><img src="' + p.img + '" alt="' + HS.esc(p.name) + '"></div>' +
+      '<div class="pdp-info">' +
+        '<div class="eyebrow">Collection No. 01</div>' +
+        "<h1>" + HS.esc(p.name) + "</h1>" +
+        '<div class="price">' + HS.money(p.price) + "</div>" +
+        '<p class="desc">' + HS.esc(p.desc) + "</p>" +
+        '<div class="opt-label">Finish: <b id="color-name">' + HS.esc(color) + "</b></div>" +
+        '<div class="swatch-pick">' + p.swatches.map(function (s, i) {
+          return '<button data-c="' + HS.esc(s[0]) + '" style="background:' + s[1] + '"' + (i === 0 ? ' class="on"' : "") + ' aria-label="' + HS.esc(s[0]) + '"></button>';
+        }).join("") + "</div>" +
+        '<div class="buy"><div class="qty"><button id="minus" aria-label="Decrease quantity">&minus;</button><span id="qty">1</span><button id="plus" aria-label="Increase quantity">+</button></div>' +
+        '<button class="btn btn-solid" id="add">Add to Bag</button></div>' +
+        '<p class="ship-note">' + HS.esc(p.ships) + (p.price >= 150 ? " Ships free." : " Free shipping on orders over $150.") + "</p>" +
+        '<div class="details">' +
+          '<details open><summary>Details &amp; Dimensions</summary><ul>' + p.details.map(function (d) { return "<li>" + HS.esc(d) + "</li>"; }).join("") + "</ul></details>" +
+          "<details><summary>Materials &amp; Care</summary><p>We choose real, substantial materials wherever we can. Natural stone, stoneware, solid wood and linen will show slight variation from piece to piece. That is part of their character.</p></details>" +
+          "<details><summary>Shipping &amp; Returns</summary><p>Smaller pieces ship from our studio. Furniture, lighting and mirrors ship directly from the maker. Unused items may be returned within 30 days of delivery.</p></details>" +
+        "</div>" +
+      "</div>" +
+    "</div>";
+
+  document.querySelectorAll(".swatch-pick button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".swatch-pick button").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      color = b.getAttribute("data-c");
+      document.getElementById("color-name").textContent = color;
+    });
+  });
+  document.getElementById("minus").addEventListener("click", function () { qty = Math.max(1, qty - 1); document.getElementById("qty").textContent = qty; });
+  document.getElementById("plus").addEventListener("click", function () { qty = Math.min(20, qty + 1); document.getElementById("qty").textContent = qty; });
+  document.getElementById("add").addEventListener("click", function () { HS.addToBag(p.id, qty, color); HS.openBag(); });
+
+  var rel = HS_PRODUCTS.filter(function (x) { return x.id !== p.id; })
+    .sort(function (a, b) { return (b.rooms.some(function (r) { return p.rooms.indexOf(r) > -1; }) ? 1 : 0) - (a.rooms.some(function (r) { return p.rooms.indexOf(r) > -1; }) ? 1 : 0); })
+    .slice(0, 4);
+  document.getElementById("related").innerHTML = rel.map(HS.card).join("");
+})();
+</script>
+</body>
+</html>

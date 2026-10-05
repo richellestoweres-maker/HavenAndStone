@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop | Hearth &amp; Stone</title>
+<meta name="description" content="Shop a small, considered collection of objects, textiles, lighting and furniture from Hearth &amp; Stone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body data-page="shop">
+<div id="site-header"></div>
+
+<main class="wrap">
+  <div class="page-title">
+    <div class="eyebrow" id="shop-eyebrow">Hearth &amp; Stone</div>
+    <h1 id="shop-title">Shop All</h1>
+    <p id="shop-sub">A small, considered collection. Every piece chosen to belong in the same beautiful home.</p>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="shop-bar">
+    <span id="count"></span>
+    <label>Sort &nbsp;<select id="sort">
+      <option value="featured">Featured</option>
+      <option value="low">Price, low to high</option>
+      <option value="high">Price, high to low</option>
+      <option value="az">Name, A to Z</option>
+    </select></label>
+  </div>
+
+  <div class="grid-4" id="shop-grid"></div>
+  <div style="height:80px"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function () {
+  var P = window.HS_PRODUCTS;
+  var qs = new URLSearchParams(location.search);
+  var state = { filter: qs.get("filter") || "all", room: qs.get("room") || "", q: (qs.get("q") || "").trim().toLowerCase(), sort: "featured" };
+
+  var fEl = document.getElementById("filters");
+  var cats = HS_CATEGORIES.concat([["new", "New"], ["saved", "Saved"]]);
+  function drawFilters() {
+    fEl.innerHTML = cats.map(function (c) {
+      var on = !state.room && !state.q && state.filter === c[0];
+      return '<button data-f="' + c[0] + '"' + (on ? ' class="active"' : "") + ">" + c[1] + "</button>";
+    }).join("");
+  }
+  fEl.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    state.filter = b.getAttribute("data-f");
+    state.room = ""; state.q = "";
+    history.replaceState(null, "", state.filter === "all" ? "shop.html" : "shop.html?filter=" + state.filter);
+    draw();
+  });
+  document.getElementById("sort").addEventListener("change", function (e) { state.sort = e.target.value; draw(); });
+
+  function draw() {
+    drawFilters();
+    var list = P.slice();
+    var title = "Shop All", eyebrow = "Hearth & Stone";
+    var sub = "A small, considered collection. Every piece chosen to belong in the same beautiful home.";
+    if (state.q) {
+      list = list.filter(function (p) { return (p.name + " " + p.short + " " + p.category).toLowerCase().indexOf(state.q) > -1; });
+      title = "Search"; sub = 'Results for "' + state.q + '"';
+    } else if (state.room) {
+      list = list.filter(function (p) { return p.rooms.indexOf(state.room) > -1; });
+      eyebrow = "Shop by Room"; title = HS_ROOMS[state.room] || "Shop"; sub = "Pieces chosen to gather, layer and live with.";
+    } else if (state.filter === "new") {
+      list = list.filter(function (p) { return p.isNew; }); title = "New Arrivals"; sub = "The latest additions to the Hearth & Stone collection.";
+    } else if (state.filter === "saved") {
+      var s = HS.saved(); list = list.filter(function (p) { return s.indexOf(p.id) > -1; }); title = "Saved"; sub = "The pieces you have saved for later.";
+    } else if (state.filter !== "all") {
+      list = list.filter(function (p) { return p.category === state.filter; });
+      cats.forEach(function (c) { if (c[0] === state.filter) title = c[1]; });
+    }
+    if (state.sort === "low") list.sort(function (a, b) { return a.price - b.price; });
+    if (state.sort === "high") list.sort(function (a, b) { return b.price - a.price; });
+    if (state.sort === "az") list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+    document.getElementById("shop-title").textContent = title;
+    document.getElementById("shop-eyebrow").textContent = eyebrow;
+    document.getElementById("shop-sub").textContent = sub;
+    document.title = title + " | Hearth & Stone";
+    document.getElementById("count").textContent = list.length + (list.length === 1 ? " piece" : " pieces");
+    var g = document.getElementById("shop-grid");
+    g.innerHTML = list.length ? list.map(HS.card).join("") :
+      '<div class="empty" style="grid-column:1/-1">' + (state.filter === "saved" ? "Tap the heart on any piece to save it here." : "More pieces are on their way. Check back soon.") + "</div>";
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

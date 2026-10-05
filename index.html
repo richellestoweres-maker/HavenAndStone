@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth &amp; Stone | Objects for a home well lived</title>
+<meta name="description" content="Timeless furnishings, thoughtful objects and natural textures for a home that feels collected, not decorated.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body data-page="home">
+<div id="site-header"></div>
+
+<main>
+  <section class="hero">
+    <img src="img/hero.jpg" alt="A stoneware vessel of olive branches on a worn wood coffee table beside a linen sofa and a lit fireplace">
+    <div class="hero-copy"><div class="wrap">
+      <h1>A home should feel collected, not decorated.</h1>
+      <p>Timeless furnishings, thoughtful objects and natural textures for a home well lived.</p>
+      <a class="btn btn-light" href="collection.html">Shop the Collection</a>
+    </div></div>
+  </section>
+
+  <section class="rooms"><div class="wrap rooms-grid">
+    <a class="room" href="shop.html?room=kitchen"><img src="img/room-kitchen.jpg" alt=""><span>The<br>Kitchen</span></a>
+    <a class="room" href="shop.html?room=living"><img src="img/room-living.jpg" alt=""><span>The<br>Living Room</span></a>
+    <a class="room" href="shop.html?room=table"><img src="img/room-table.jpg" alt=""><span>The<br>Table</span></a>
+    <a class="room" href="shop.html?room=bedroom"><img src="img/room-bedroom.jpg" alt=""><span>The<br>Bedroom</span></a>
+    <a class="room" href="shop.html?filter=objects"><img src="img/room-objects.jpg" alt=""><span>Objects</span></a>
+    <a class="room" href="shop.html?filter=textiles"><img src="img/room-textiles.jpg" alt=""><span>Textiles</span></a>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <div class="section-head">
+      <h2>New &amp; Noteworthy</h2>
+      <a class="link-arrow" href="shop.html?filter=new">Shop all new</a>
+    </div>
+    <div class="grid-6" id="new-grid"></div>
+  </div></section>
+
+  <section class="philosophy">
+    <div class="img"><img src="img/stone-detail.jpg" alt="Close detail of natural travertine texture"></div>
+    <div class="copy">
+      <div class="eyebrow">Our Philosophy</div>
+      <h2>Objects for a home well lived.</h2>
+      <p>We believe a home should feel collected over time. Layered, personal and full of pieces that tell a story. Hearth &amp; Stone brings together natural materials, timeless design and everyday beauty to help you create spaces that feel like home.</p>
+      <div><a class="link-arrow" href="story.html">Our Story</a></div>
+    </div>
+    <div class="img"><img src="img/vignette-vase.jpg" alt="A stoneware vase of greenery on a dark wood console"></div>
+  </section>
+
+  <section class="section"><div class="wrap look">
+    <div class="look-intro">
+      <h2 class="h-caps">Shop the Look</h2>
+      <div class="sub">The Collected Living Room</div>
+      <p>A warm, inviting space layered with natural textures, substantial pieces and timeless neutrals.</p>
+      <button class="btn" id="add-look">Shop the Entire Look</button>
+    </div>
+    <div class="look-photo">
+      <img src="img/look-living.jpg" alt="A living room with a linen sectional, wood coffee table, ceramic lamp and stoneware vessel">
+      <a class="hotspot" style="left:21.6%;top:25.6%" href="product.html?id=rhea-table-lamp">+<span class="tip">Rhea Table Lamp</span></a>
+      <a class="hotspot" style="left:31%;top:44%" href="product.html?id=terrain-vessel">+<span class="tip">Terrain Vessel</span></a>
+      <a class="hotspot" style="left:78%;top:37%" href="product.html?id=linen-pillow">+<span class="tip">Linen Pillow</span></a>
+      <a class="hotspot" style="left:59%;top:79%" href="product.html?id=walnut-coffee-table">+<span class="tip">Walnut Coffee Table</span></a>
+    </div>
+    <ul class="look-list" id="look-list"></ul>
+  </div></section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function () {
+  var P = window.HS_PRODUCTS;
+  document.getElementById("new-grid").innerHTML = P.filter(function (p) { return p.isNew; }).slice(0, 6).map(HS.card).join("");
+
+  var look = [["rhea-table-lamp", "img/t-lamp.jpg"], ["linen-pillow", "img/t-pillow.jpg"], ["walnut-coffee-table", "img/t-coffee-table.jpg"], ["terrain-vessel", "img/t-vessel.jpg"]];
+  document.getElementById("look-list").innerHTML = look.map(function (l) {
+    var p = HS.byId(l[0]);
+    return '<li><a href="product.html?id=' + p.id + '"><img src="' + l[1] + '" alt=""><div><div class="n">' + HS.esc(p.name) + '</div><div class="p">' + HS.money(p.price) + '</div></div><span class="go">&rsaquo;</span></a></li>';
+  }).join("");
+
+  document.getElementById("add-look").addEventListener("click", function () {
+    look.forEach(function (l) { HS.addToBag(l[0], 1, HS.byId(l[0]).swatches[0][0]); });
+    HS.toast("The Collected Living Room was added to your bag");
+    HS.openBag();
+  });
+})();
+</script>
+</body>
+</html>
